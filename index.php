@@ -247,24 +247,30 @@ if(!$conn){
 		
 		  }
 			
-if(!empty($_POST["name"]) && !empty($_POST["email"])  && !empty($_POST["phone"]) && !empty($_POST["subject"]) && !empty($_POST["msg"]) ){
-		$to='opks47284@gmail.com'; // Receiver Email ID, Replace with your email ID
-	
-		$message="Name :".$name."\n"."Phone :".$phone."\n"."Wrote the following :"."\n\n".$msg;
-		$headers="From: ".$email;
-    $sql = "INSERT INTO contact (name,email,phone,subject,msg)
-    VALUES ('$name','$email','$phone','$subject','$msg')";
-     if (mysqli_query($conn, $sql)) {
+      if(empty($nameErr) && empty($emailError) && empty($mobileError) && empty($subjectError) &&  empty($subjectError)){
+        // echo "asd";exit;
+
+        if(!empty($_POST["name"]) && !empty($_POST["email"])  && !empty($_POST["phone"]) && !empty($_POST["subject"]) && !empty($_POST["msg"]) ){
+          $to='opks47284@gmail.com'; // Receiver Email ID, Replace with your email ID
+        
+          $message="Name :".$name."\n"."Phone :".$phone."\n"."Wrote the following :"."\n\n".$msg;
+          $headers="From: ".$email;
+          $sql = "INSERT INTO contact (name,email,phone,subject,msg)
+          VALUES ('$name','$email','$phone','$subject','$msg')";
+           if (mysqli_query($conn, $sql)) {
+            
+           }
+        
+          if(mail($to, $subject, $message, $headers)){
+            $successmsg= "Sent Successfully! Thank you"." ".$name.", We will contact you shortly!";
+          }
+          else{
+            $successmsg= "";
+          }
+        }
       
-     }
-	
-		if(mail($to, $subject, $message, $headers)){
-      $successmsg= "Sent Successfully! Thank you"." ".$name.", We will contact you shortly!";
-		}
-		else{
-			$successmsg= "";
-		}
-  }
+      
+      }
 	}
 ?>
   <section class="contact-us" id="contact-section">
@@ -296,7 +302,7 @@ if(!empty($successmsg)){
       </div>
 
 	  <div class="inputField">
-        <input type="tel" name="phone" id="phone" placeholder="Enter Your Phone" />
+        <input type="number" name="phone" id="phone" placeholder="Enter Your Phone" />
         <span class="error">* <?php echo $mobileError;?></span>
         <br><br>
       </div>
